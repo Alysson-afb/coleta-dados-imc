@@ -3,24 +3,30 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     padding-bottom: 70px;
 }
+
 nav{
     text-align: center;
     padding: 10px;
 }
+
 #titulo{
     text-align: center;
 }
+
 #titulo h1{
     font-size: 40px;
 }
+
 #titulo h1{
     font-size: 40px;
 }
+
 #formulario{
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 form input[type="text"], input[type="int"],input[type="float"]{
     width: 500px;
     height: 25px;
@@ -32,6 +38,7 @@ form input[type="text"], input[type="int"],input[type="float"]{
     border: 1px solid #ccc;
     background-color: #fff;
 }
+
 form input[type="submit"]{
     width: 515px;
     height: 35px;
@@ -44,28 +51,32 @@ form input[type="submit"]{
     border: 1px solid #ccc;
 }
 
-
 h2, p, h3{
     text-align: center;
 }
+
 menu{
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
 }
+
 img{
     width: 200px;
 }
+
 menu a{
     font-size: 20px;
     margin: 10px;
     text-decoration: none;
     color: black;
 }
+
 menu a:hover{
     text-decoration: underline;
 }
+
 footer{
     text-align: center;
     position: fixed;
@@ -76,14 +87,10 @@ footer{
     padding-top: 15px;
 }
 
-
-
-
 #tabela {
     display: flex;
     justify-content: center;
 }
-
 
 table {
     border-collapse: separate;
@@ -93,11 +100,9 @@ table {
     border: 1px solid #ccc;
 }
 
-
 th {
     background-color: #f2f2f2;
 }
-
 
 th, td {
     padding: 7px;
@@ -105,22 +110,18 @@ th, td {
     border-right: 1px solid #ccc;
 }
 
-
 tr th:last-child,
 tr td:last-child {
     border-right: none;
 }
 
-
 table tr:last-child td {
     border-bottom: none;
 }
 
-
 #infos{
 margin: auto;
 }
-
 
 .container-botoes {
     display: flex;
@@ -131,11 +132,9 @@ margin: auto;
     gap: 15px;
 }
 
-
 .container-botoes h1 {
     margin-bottom: 20px;
 }
-
 
 .btn {
     display: inline-block;
@@ -150,21 +149,17 @@ margin: auto;
     transition: 0.3s;
 }
 
-
 .btn:hover {
     background-color: #34495e;
     transform: scale(1.05);
 }
 
-
 .acoes a {
-    text-decoration: none; /* tira o sublinhado */
-    color: #2c3e50; /* cor padrão */
+    text-decoration: none;
+    color: #2c3e50;
     margin-right: 8px;
 }
 
-
 .acoes a:hover {
-    color: #2980b9; /* muda cor ao passar o mouse */
+    color: #2980b9;
 }
-
