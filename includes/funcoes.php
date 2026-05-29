@@ -1,58 +1,71 @@
 <?php
 
-    function conectar(): mysqli {
+    function conectar(): PDO {
         include("dados-do-banco.php");
-        return mysqli_connect($localServidor, $usuario, $senha, $nomeBaseDados);
+        $dsn = "mysql:host=$localServidor;dbname=$nomeBaseDados;charset=utf8";
+        return new PDO($dsn, $usuario, $senha);
     }
 
-    function buscarDados(mysqli $conexao): array {
+    //Basear nessa método para utilizar PDO nas funções
+    function buscarDados(PDO $conexao): array {
+        //Comando SQL
         $sql = "SELECT * FROM pessoas";
-        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
-        $dados = [];
-
-        while ($registro = mysqli_fetch_assoc($resultado)) {
-            $dados[] = $registro;
-        }
-        return $dados;
+        //Prepara a query
+        $stmt = $conexao->prepare($sql);
+        //Executa a query
+        $stmt->execute();
+        //Retorna os resultados como um array, neste caso associativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    function buscarDadosPorId(mysqli $conexao, $id): array {
+    function buscarDadosPorId(PDO $conexao, $id): array {
         $sql = "SELECT * FROM pessoas WHERE idpessoa = $id";
-        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
-        return mysqli_fetch_assoc($resultado) ?? [];
+
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
     }
 
-    function excluirRegistro(mysqli $conexao, $id): bool {
+    function excluirRegistro(PDO $conexao, $id): bool {
         $sql = "DELETE FROM pessoas WHERE idpessoa = $id";
+
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+
         registrarLog($conexao, "EXCLUIR", "Pessoa ID $id foi excluída");
-        return mysqli_query($conexao, $sql);
     }
 
-    function salvarDados(mysqli $conexao, $nome, $sobrenome, $idade, $peso, $altura): void {
+    function salvarDados(PDO $conexao, $nome, $sobrenome, $idade, $peso, $altura): void {
         $sql = "INSERT INTO pessoas (nome, sobrenome, idade, peso, altura)
-                VALUES ('$nome', '$sobrenome', $idade, $peso, $altura)";
-        mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
-        $id = mysqli_insert_id($conexao);
+                VALUES (?, ?, ?, ?, ?)";
+
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute([$nome, $sobrenome, $idade, $peso, $altura]);
+
+        $id = $conexao->lastInsertId();
+
         registrarLog($conexao, "INSERIR", "Pessoa ID $id foi criada");
     }
 
-    function alterarDados(mysqli $conexao, $id, $nome, $sobrenome, $idade, $peso, $altura): string {
+    function alterarDados(PDO $conexao, $id, $nome, $sobrenome, $idade, $peso, $altura): string {
         $sql = "UPDATE pessoas
-                SET nome='$nome', sobrenome='$sobrenome', idade=$idade, peso=$peso, altura=$altura
-                WHERE idpessoa=$id";
+                SET nome=?, sobrenome=?, idade=?, peso=?, altura=?
+                WHERE idpessoa=?";
 
-        $resultado = mysqli_query($conexao, $sql);
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute([$nome, $sobrenome, $idade, $peso, $altura, $id]);
 
-        if ($resultado) {
+        if ($stmt->rowCount() > 0) {
             registrarLog($conexao, "ALTERAR", "Pessoa ID $id foi alterada");
-            if(mysqli_affected_rows($conexao) > 0){
-                return "Dados alterados com sucesso!";
+            return "Dados alterados com sucesso!";
             }
             else{
                 return "Nenhuma linha foi alterada";
             }
-        }
-        return "Erro: " . mysqli_error($conexao);
+        return "Erro: " . $conexao->errorInfo()[2];
     }
 
     function calcularIMC($peso, $altura) {
@@ -75,6 +88,7 @@
 
     function imcMedio($pessoas) {
         if (empty($pessoas)) return 0;
+
         $soma = 0;
 
         foreach ($pessoas as $pessoa) {
@@ -85,6 +99,7 @@
 
     function maiorIdade($pessoas): int {
         if (empty($pessoas)) return 0;
+
         $maior = $pessoas[0]['idade'];
 
         foreach ($pessoas as $pessoa) {
@@ -95,6 +110,7 @@
 
     function menorIdade($pessoas): int {
         if (empty($pessoas)) return 0;
+
         $menor = $pessoas[0]['idade'];
 
         foreach ($pessoas as $pessoa) {
@@ -103,8 +119,10 @@
         return $menor;
     }
 
+
     function nomeMaisVelho($pessoas): string {
         if (empty($pessoas)) return "";
+
         $maisVelho = $pessoas[0];
 
         foreach ($pessoas as $pessoa) {
@@ -115,8 +133,10 @@
         return $maisVelho['nome'] . " " . $maisVelho['sobrenome'];
     }
 
+
     function nomeAlturaMaisNovo($pessoas): array {
         if (empty($pessoas)) return [];
+
         $maisNovo = $pessoas[0];
 
         foreach ($pessoas as $pessoa) {
@@ -133,8 +153,8 @@
 
     function idadeMedia($pessoas): float {
         if (empty($pessoas)) return 0;
-        $soma = 0;
 
+        $soma = 0;
         foreach ($pessoas as $pessoa) {
             $soma += $pessoa['idade'];
         }
@@ -143,6 +163,7 @@
 
     function qntNomesAcimaDaMedia($pessoas): array {
         if (empty($pessoas)) return ['pessoas' => [], 'total_acima_media' => 0];
+
         $media = idadeMedia($pessoas);
         $nomes = [];
 
@@ -160,8 +181,10 @@
         ];
     }
 
+
     function qntAbaixoMedia($pessoas): int {
         if (empty($pessoas)) return 0;
+
         $media = idadeMedia($pessoas);
         $total = 0;
 
@@ -173,14 +196,15 @@
         return $total;
     }
 
-    function tresMaisVelhosIMC(mysqli $conexao): array {
+    function tresMaisVelhosIMC(PDO $conexao): array {
         $sql = "SELECT nome, sobrenome, peso, altura FROM pessoas ORDER BY idade DESC LIMIT 3";
-        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute();
+
         $pessoas = [];
 
-        while ($linha = mysqli_fetch_assoc($resultado)) {
+        while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $imc = calcularIMC($linha['peso'], $linha['altura']);
-
 
             $pessoas[] = [
                 'nome' => $linha['nome'],
@@ -191,14 +215,14 @@
         return $pessoas;
     }
 
-
-    function cincoMaisNovosIMC(mysqli $conexao): array {
+    function cincoMaisNovosIMC(PDO $conexao): array {
         $sql = "SELECT nome, sobrenome, peso, altura FROM pessoas ORDER BY idade ASC LIMIT 5";
-        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute();
 
         $pessoas = [];
 
-        while ($linha = mysqli_fetch_assoc($resultado)) {
+        while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $imc = calcularIMC($linha['peso'], $linha['altura']);
             $pessoas[] = [
                 'nome' => $linha['nome'],
@@ -223,7 +247,6 @@
         return $maior;
     }
 
-
     function menorPeso($pessoas): float {
         if (empty($pessoas)) return 0;
 
@@ -236,7 +259,6 @@
         }
         return $menor;
     }
-
 
     function pesoMedio($pessoas): float {
         if (empty($pessoas)) return 0;
@@ -258,12 +280,8 @@
             $classificacao = classificarIMC($imc);
 
             if ($classificacao != "Peso normal") {
-
-
                 $pesoIdeal = 22 * ($pessoa['altura'] * $pessoa['altura']);
                 $diferenca = round($pesoIdeal - $pessoa['peso'], 2);
-
-
                 $resultado[] = [
                     'nome' => $pessoa['nome'],
                     'sobrenome' => $pessoa['sobrenome'],
@@ -277,9 +295,9 @@
         return $resultado;
     }
 
-    function registrarLog(mysqli $conexao, string $acao, string $descricao):void{
-        $sql = "INSERT INTO log_alteracoes (acao, descricao) VALUES ('$acao', '$descricao')";
-        mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
+    function registrarLog(PDO $conexao, string $acao, string $descricao):void{
+        $sql = "INSERT INTO log_alteracoes (acao, descricao) VALUES (?, ?)";
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute([$acao, $descricao]);
     }
 ?>
-
