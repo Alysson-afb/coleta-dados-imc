@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho Coleta de Dados IMC OMS IFSul</title>
+</head>
+<body>
+    <nav>
+        //<img src="" alt="">
+        <hr>
+    </nav>
+    <div>
+        <h1>Formulário Online</h1>
+        <p>Coleta de dados - OMS IFSul</p>
+        <br>
+        <br>
+    </div>
+    <div>
+        <form action="processar_formulario.php" method="get">
+            <label for="nome">Nome:</label>
+            <br>
+            <input type="text" placeholder="Nome" name="name" required>
+            <br>
+            <label for="sobrenome">Sobrenome:</label>
+            <br>
+            <input type="text" placeholder="Sobrenome" name="sobrenome" required>
+            <br>
+            <label for="peso">Peso</label>
+            <br>
+            <input type="float" placeholder="Peso em kg (ex: 70.50)" name="peso" required>
+            <br>
+            <label for="idade">Idade</label>
+            <br>
+            <input type="int" placeholder="Digite sua idade" name="idade" required>
+            <br>
+            <label for="altura">Altura</label>
+            <br>
+            <input type="float" placeholder="Altura em metros (ex: 1.75)" name="altura" required>
+            <br>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+    <footer>
+            Credito - Alysson e Renan - IFSul
+    </footer>
+</body>
+</html>
