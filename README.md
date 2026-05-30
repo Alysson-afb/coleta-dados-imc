@@ -1,6 +1,7 @@
 # Coleta de Dados de IMC
 
-> **Projeto Prático: Desenvolvimento para a Disciplina de Linguagem de Programação Web 2 (LPW2)** 
+> **Projeto Prático: Desenvolvimento para a Disciplina de Linguagem de Programação Web 2 (LPW2)**
+
 > **Curso: Análise e Desenvolvimento de Sistemas (ADS) — IFSul Campus Venâncio Aires**
 
 ---
@@ -15,9 +16,7 @@ O software consiste em uma plataforma web dividida em duas frentes principais:
 
 ---
 
-## Tecnologias e Recursos Utilizados
-
-O foco principal do projeto foi o processamento e a lógica do lado do servidor (backend), garantindo a persistência correta e a segurança das informações.
+## Tecnologias Utilizados
 
 - Linguagem Backend: PHP (com funções fortemente tipadas)
 - Banco de Dados: MySQL / MariaDB (Script incluso)
@@ -26,7 +25,7 @@ O foco principal do projeto foi o processamento e a lógica do lado do servidor 
 
 ---
 
-## Funcionalidades Implementadas
+## Funcionalidades Principais
 
 ### 1. Sistema de Coleta (Formulário Público)
 - Cadastro de participantes contendo: Nome, Sobrenome, Idade, Peso e Altura.
@@ -57,9 +56,11 @@ O painel processa e exibe indicadores cruciais divididos em três categorias:
 
 ---
 
-## Como Executar o Projeto Localmente - Pré-requisitos
+## Pré-Requisitos para Execução do Projeto: 
 
-Você precisará de um ambiente de servidor local que suporte PHP, MySQL e XAMPP.
+- PHP
+- Xampp servidor de páginas local
+- Servidor MySQL ativo
 
 ---
 
