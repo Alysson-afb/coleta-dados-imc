@@ -57,22 +57,12 @@ O painel processa e exibe indicadores cruciais divididos em três categorias:
 
 ---
 
-## Estrutura de Arquivos Obrigatórios
-
-Conforme os requisitos da entrega, o repositório contém:
-- Scripts dos códigos fontes (Páginas, lógicas de processamento e arquivos de funções tipadas).
-- Script do banco de dados (Arquivo .sql para criação das tabelas estruturadas).
-- Arquivo operacoes_bd.txt (Gerado no servidor contendo o histórico do CRUD).
-
----
-
 ## Como Executar o Projeto Localmente - Pré-requisitos
 
-Você precisará de um ambiente de servidor local que suporte PHP e MySQL, como o XAMPP.
+Você precisará de um ambiente de servidor local que suporte PHP, MySQL e XAMPP.
 
 ---
 
 ### Clonar o Repositório:
 
-```bash
-   git clone [https://github.com/Alysson-afb/coleta-dados-imc.git](https://github.com/Alysson-afb/coleta-dados-imc.git)
+git clone https://github.com/Alysson-afb/coleta-dados-imc.git
