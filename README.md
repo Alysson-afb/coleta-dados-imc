@@ -1,6 +1,6 @@
 # Coleta de Dados de IMC
 
-> **Projeto Prático: Desenvolvimento para a Disciplina de Linguagem de Programação Web 2 (LPW2)**
+> **Projeto Prático: Desenvolvimento para a Disciplina de Linguagem de Programação Web II (LPW2)**
 
 > **Curso: Análise e Desenvolvimento de Sistemas (ADS) — IFSul Campus Venâncio Aires**
 
@@ -61,6 +61,8 @@ O painel processa e exibe indicadores cruciais divididos em três categorias:
 - PHP
 - Xampp servidor de páginas local
 - Servidor MySQL ativo
+- (Desenvolvimento e testes realizados em plataforma Mac Silicon)
+Colocar Banco src/database
 
 ---
 
